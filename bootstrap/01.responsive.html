@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>반응형 CSS 디자인</title>
+</head>
+<style>
+    body {
+        height: 1000px;
+        background-color: #74b9ff;
+    }
+
+    h1 {
+        font-size: 32px;
+    }
+
+    /* 폭을 이용한 조건부 디자인 */
+    @media screen and (max-width:860px) {
+        body {
+            background-color: #55efc4;
+        }
+
+        h1 {
+            font-size: 24px;
+        }
+    }
+
+        /* 폭을 이용한 조건부 디자인 */
+        @media screen and (max-width:660px) {
+        body {
+            background-color: #b01fe9;
+        }
+
+        h1 {
+            font-size: 16px;
+        }
+    }
+</style>
+
+<body>
+    <h1>KH 정보교육원 풀스택 개발자 양성과정 디자인 수업자료!</h1>
+</body>
+
+</html>
