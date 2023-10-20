@@ -16,7 +16,7 @@
 
 	<%-- 쿠키가 있을때만 나오는 화면 구현 --%>
 	<c:if test="${cookie.popup ==null }">
-		<h2>팝업화면</h2>
+	<img src="sss.png">
 	</c:if>
 	<h3>
 		<a href="create1">평생 안보기</a>
