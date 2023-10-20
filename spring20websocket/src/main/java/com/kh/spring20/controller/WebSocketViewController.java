@@ -40,7 +40,7 @@ public class WebSocketViewController {
 	}
 	@RequestMapping("/member")
 	public String member() {
-		// return "/WEN-INF/views/group.jsp";
+		// return "/WEN-INF/views/member.jsp";
 		return "member";
 	}
 

@@ -20,6 +20,9 @@ public class MemberWebSocketServer extends TextWebSocketHandler {
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
 		clients.add(session);
 		log.debug("사용자 접속={}",clients.size());
+		
+		//session의 추가정보(attributes)를 조사하여 HttpSession의 정보를 추출하여 사용
+		log.debug("session={}",session.getAttributes());
 	}
 
 	@Override
