@@ -20,6 +20,12 @@ public class WebSocketViewController {
 	}
 	@RequestMapping("/time")
 	public String time() {
+		// 	return "/WEN-INF/views/time.jsp";
 		return "time";
+	}
+	@RequestMapping("/group")
+	public String group() {
+		// 	return "/WEN-INF/views/group.jsp";
+		return "group";
 	}
 }

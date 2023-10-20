@@ -11,5 +11,6 @@
 
 <H2><a href="/default">웹소켓 기본</a></H2>
 <H2><a href="/time">웹소켓 타임</a></H2>
+<H2><a href="/group">웹소켓 그룹</a></H2>
 </body>
 </html>

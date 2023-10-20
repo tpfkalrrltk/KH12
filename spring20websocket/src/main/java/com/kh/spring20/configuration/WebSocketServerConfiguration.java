@@ -7,6 +7,7 @@ import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
 
 import com.kh.spring20.websocket.DefaultWebSocketServer;
+import com.kh.spring20.websocket.GroupWebSocketServer;
 import com.kh.spring20.websocket.TimeWebSocketServer;
 
 // 이 클래스는 생성한 웹소캣 서버를 어떤 주소에 할당하도록 설정하는 역할을 한다
@@ -18,6 +19,8 @@ public class WebSocketServerConfiguration implements WebSocketConfigurer {
 	private DefaultWebSocketServer defaultWebSocketServer;
 	@Autowired
 	private TimeWebSocketServer timeWebSocketServer;
+	@Autowired
+	private GroupWebSocketServer groupWebSocketServer;
 	
 	@Override
 	public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
@@ -26,6 +29,8 @@ public class WebSocketServerConfiguration implements WebSocketConfigurer {
 		registry.addHandler(defaultWebSocketServer, "/ws/default");
 		
 		registry.addHandler(timeWebSocketServer, "/ws/time");
+		
+		registry.addHandler(groupWebSocketServer, "/ws/group");
 	}
 
 }
