@@ -96,17 +96,23 @@ public class SockJsWebSocketServer extends TextWebSocketHandler {
 			map.put("memberId", client.getMemberId());
 			map.put("memberLevel", client.getMemberLevel());
 			map.put("content",params.get("content"));
+		
 			//시간 추가 등
 			String messageJson = mapper.writeValueAsString(map);
 			TextMessage tm = new TextMessage(messageJson);
 			
 			for(ClientVO c : members) {
 				if(c.getMemberId().equals(params.get("target"))) {//내가 찾던 사람이라면
-					c.send(tm);
+					c.send(tm); //대상에세 메세지 전송
 				}
 			
 			}
-			session.sendMessage(tm);
+			//수신자에게 target 항목을 추가하여 다시 메세지 전송
+			map.put("target", params.get("target"));
+			messageJson = mapper.writeValueAsString(map);
+			tm = new TextMessage(messageJson);
+			
+			client.send(tm);//작성자에게 메세지 전송
 		}
 		else {//전체 채팅일 경우
 			
