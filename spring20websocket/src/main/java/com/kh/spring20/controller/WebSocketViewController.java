@@ -68,4 +68,10 @@ public class WebSocketViewController {
 		return"redirect:/";
 		
 	}
+	
+	@RequestMapping("/json")
+	public String json() {
+		// return "/WEN-INF/views/json.jsp";
+		return "json";
+	}
 }
