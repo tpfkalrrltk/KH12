@@ -74,4 +74,8 @@ public class WebSocketViewController {
 		// return "/WEN-INF/views/json.jsp";
 		return "json";
 	}
+	@RequestMapping("/sockjs")
+	public String sockjs() {
+		return "sockjs";
+	}
 }

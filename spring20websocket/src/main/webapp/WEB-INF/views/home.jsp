@@ -33,7 +33,7 @@ PW <input type="password" name="memberPw">
 <H2><a href="/group">웹소켓 그룹</a></H2>
 <h2><a href="/member">회원 전용 웹소켓</a></h2>
 <h2><a href="/json">회원 전용 웹소켓(+JSON)</a></h2>
-
+<h2><a href="/sockjs">SockJS</a></h2>
 
 </body>
 </html>
