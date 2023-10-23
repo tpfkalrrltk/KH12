@@ -21,30 +21,43 @@
 	rel="stylesheet">
 
 <style>
-.btn-userlist{
-display: none;
+.btn-userlist {
+	display: none;
 }
 
+.message-list {
+	height: 50vh;
+	overflow-y: scroll;
+	padding-bottom: 15px;
+}
+
+::-webkit-scrollbar {
+	width: 10px; /*스크롤바 너비*/
+	background-color: black;
+}
+::-webkit-scrollbar-thumb {
+	width: 10px; /*스크롤바 너비*/
+	background-color: var(--bs-secondary); /*스크롤바 색상*/
+}
 
 @media screen and (max-width :768px) {
-.btn-userlist{
-display: block;
-}
-
+	.btn-userlist {
+		display: block;
+	}
 	.client-list {
 		position: fixed;
-		top:0;
+		top: 0;
 		bottom: 0;
 		left: -250px;
 		width: 250px;
-		margin-top : 200px;
-		z-index:9999;
-		transition:left 0.2s ease-out;
+		margin-top: 200px;
+		z-index: 9999;
+		transition: left 0.2s ease-out;
 		background-color: black;
 		color: white;
 	}
-	.client-list.active{
-	left: 0;
+	.client-list.active {
+		left: 0;
 	}
 }
 </style>
@@ -59,7 +72,9 @@ display: block;
 				<div class="row mt-4">
 					<div class="col">
 						<h1>전체 채팅</h1>
-						<button class="btn btn-secondary btn-userlist"><i class="fa-solid fa-users"></i>사용자</button>
+						<button class="btn btn-secondary btn-userlist">
+							<i class="fa-solid fa-users"></i>사용자
+						</button>
 					</div>
 				</div>
 
@@ -131,9 +146,14 @@ display: block;
 						"badge bg-primary badge-pill ms-2");
 				var content = $("<div>").text(data.content);
 
+				
+				//화면에 메세지 추가
 				$("<div>").addClass("border border-secondary rounded p-2 mt-2")
 						.append(memberId).append(memberLevel).append("<hr>")
 						.append(content).appendTo(".message-list");
+				
+				//스크롤바를 맨 아래로 이동
+				$(".message-list").scrollTop($(".message-list")[0].scrollHeight);
 			}
 		};
 
@@ -145,9 +165,9 @@ display: block;
 			window.socket.send(text);
 			$(".message-input").val("");
 		});
-		
+
 		//.btn-userlist를 누르면 사용자 목록에 active 붙였다 떼었다 하도록 처리
-		$(".btn-userlist").click(function(){
+		$(".btn-userlist").click(function() {
 			$(".client-list").toggleClass("active");
 		})
 	</script>
