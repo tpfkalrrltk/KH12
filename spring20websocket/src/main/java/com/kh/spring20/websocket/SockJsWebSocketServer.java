@@ -117,13 +117,21 @@ public class SockJsWebSocketServer extends TextWebSocketHandler {
 			
 			}
 			
-		
 			//수신자에게 target 항목을 추가하여 다시 메세지 전송
 			map.put("target", params.get("target"));
 			messageJson = mapper.writeValueAsString(map);
 			tm = new TextMessage(messageJson);
 			
 			client.send(tm);//작성자에게 메세지 전송
+			
+			//DB insert(DM일 경우 내용,발신자,발신자 등급,수신자를 저장)
+			chatDao.insert(ChatDto.builder()
+					.chatContent((String) params.get("content"))
+					.chatSender(client.getMemberId())
+					.chatSenderLevel(client.getMemberLevel())
+					.chatReceiver((String) params.get("target"))
+					.build());
+			
 		}
 		else {//전체 채팅일 경우
 			
