@@ -3,6 +3,8 @@ package com.kh.spring21.service;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import javax.servlet.Servlet;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.kh.spring21.configuration.KakaoPayProperties;
 import com.kh.spring21.vo.KakaoPayReadyRequestVO;
@@ -41,9 +44,13 @@ public class KakaoPaySerivceImpl implements KakaoPayService {
 		body.add("quantity", String.valueOf(request.getItemPrice()));
 		body.add("total_amount", "3000");
 		body.add("tax_free_amount", "0");
-		body.add("approval_url", "http://localhost:8080/pay/success");
-		body.add("cancel_url", "http://localhost:8080/pay/cancel");
-		body.add("fail_url", "http://localhost:8080/pay/fail");
+		
+		//현재 페이지 주소 계산
+		String path =ServletUriComponentsBuilder.fromCurrentRequestUri().toUriString();
+		
+		body.add("approval_url", path+"/success");
+		body.add("cancel_url", path+"/cancel");
+		body.add("fail_url", path+"/fail");
 
 		// 요청 발송
 		HttpEntity entity = new HttpEntity(body, headers);
