@@ -17,13 +17,17 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @SpringBootTest
-public class Test01Ready {
+public class Test02Ready {
 
 	@Test
 	public  void test() throws URISyntaxException {
-		//웹서버에서 PG사(제3의 서버)로 요청 보내기 위해선 다음 둘 중 하나가 필요
-		//[1] RestTemplate
-		//[2] WebClient
+		//변하는 정보와 중요한 정보들을 분리하여 모듈로 개발
+		
+		//결재시마다 변하는 정보 -상품명, 상품가격,주문번호, 구매자ID
+		String itemName ="슈퍼 울트라 노트북";
+		int itemPrice = 150000;
+		String partnerOrderId =UUID.randomUUID().toString();
+		String partnerUserId = "testuser1";
 		
 		//전송 도구 생성
 		RestTemplate template = new RestTemplate();
@@ -39,11 +43,11 @@ public class Test01Ready {
 		//바디 설정
 		MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
 		body.add("cid", "TC0ONETIME");
-		body.add("partner_order_id", UUID.randomUUID().toString());
-		body.add("partner_user_id", "testuser1");
-		body.add("item_name", "아이스 아메리카노 T");
+		body.add("partner_order_id", partnerOrderId);
+		body.add("partner_user_id", partnerUserId);
+		body.add("item_name", itemName);
 		body.add("quantity", "1");
-		body.add("total_amount", "3000");
+		body.add("total_amount",String.valueOf(itemPrice));
 		body.add("tax_free_amount", "0");
 		body.add("approval_url", "http://localhost:8080/pay/success");
 		body.add("cancel_url", "http://localhost:8080/pay/cancel");
