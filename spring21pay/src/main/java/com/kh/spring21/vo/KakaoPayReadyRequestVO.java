@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class KakaoPayReadyRequestVO {
+public class KakaoPayReadyRequestVO{
 private String partnerOrderId;
 private String partnerUserId;
 private String itemName;
