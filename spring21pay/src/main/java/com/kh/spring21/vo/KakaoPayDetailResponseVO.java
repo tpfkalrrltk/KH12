@@ -23,8 +23,8 @@ public class KakaoPayDetailResponseVO {
 	private String cid;
 	private String status;
 	private String partnerOrderId;
-	private String partnetUserId;
-	private int paymentMethodType;
+	private String partnerUserId;
+	private String paymentMethodType;
 	private String itemName;
 	private String itemCode;
 	private String quantity;
@@ -36,6 +36,6 @@ public class KakaoPayDetailResponseVO {
 	private KakaoPayAmountVO CanceledAvailableAmount;
 	private KakaoPaySelectedCardInfoVO SelectedCardInfo;
 //	private KakaoPayPaymentActionDetail[] PaymentActionDetail;
-	private List <KakaoPayPaymentActionDetail> PaymentActionDetail;
+	private List <KakaoPayPaymentActionDetailVO> PaymentActionDetail;
 	
 }

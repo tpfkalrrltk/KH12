@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.kh.spring21.service.KakaoPayService;
 import com.kh.spring21.vo.KakaoPayApproveRequestVO;
 import com.kh.spring21.vo.KakaoPayApproveResponseVO;
+import com.kh.spring21.vo.KakaoPayDetailRequestVO;
+import com.kh.spring21.vo.KakaoPayDetailResponseVO;
 import com.kh.spring21.vo.KakaoPayReadyRequestVO;
 import com.kh.spring21.vo.KakaoPayReadyResponseVO;
 
@@ -69,5 +72,15 @@ private KakaoPayService kakaoPayService;
 	public String successResult() {
 		//return "/WEB-INF/views/pay/successResult.jsp";
 		return "pay/successResult";
+	}
+	@GetMapping("/test1/detail")
+	public String detail(Model model, @RequestParam String tid) throws URISyntaxException {
+		KakaoPayDetailResponseVO response = 
+				kakaoPayService.detail(KakaoPayDetailRequestVO.builder()
+						.tid(tid)
+						.build());
+		model.addAttribute("vo",response);
+		//return "/WEB-INF/views/pay/detail.jsp";
+		return "pay/detail";
 	}
 }

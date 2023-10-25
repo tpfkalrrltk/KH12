@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class KakaoPayPaymentActionDetail {
+public class KakaoPayPaymentActionDetailVO {
 private String aid;
 private String approvedAt;
 private String amount;
