@@ -5,5 +5,6 @@
 
 <ul>
 <c:forEach var="productDto" items="${list}">
-<li>${productDto. productName}(${productDto.productPrice} 원)<a href="#">구매하기</a></li>
+<li>${productDto. productName}(${productDto.productPrice} 원)
+<a href="test2/purchase?productNo=${productDto.productNo}">구매하기</a></li>
 </c:forEach></ul>

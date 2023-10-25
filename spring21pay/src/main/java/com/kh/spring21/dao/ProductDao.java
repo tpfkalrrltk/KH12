@@ -6,4 +6,5 @@ import com.kh.spring21.dto.ProductDto;
 
 public interface ProductDao {
 	List<ProductDto> selectList();
+	ProductDto selectOne(int productNo);
 }

@@ -7,5 +7,8 @@
     <select id="list" resultType="ProductDto">
     select * from product order by product_no asc
     </select>
+    <select id="find" resultType="ProductDto">
+    select * from product where product_no = #{porductNo}
+    </select>
     
     </mapper>
