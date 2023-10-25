@@ -15,13 +15,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class KakaoPayPaymentActionDetailVO {
+public class KakaoPaymentActionDetailVO {
 private String aid;
 private String approvedAt;
 private String amount;
 private String pointAmount;
 private String discountAmount;
 private String greenDeposit;
-private String paymontActionType;
+private String paymentActionType;
 private String payload;
 }

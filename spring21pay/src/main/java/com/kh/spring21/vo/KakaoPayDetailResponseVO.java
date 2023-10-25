@@ -12,12 +12,11 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @JsonIgnoreProperties(ignoreUnknown = true)
-@Data
+@Data@NoArgsConstructor@AllArgsConstructor
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
 public class KakaoPayDetailResponseVO {
 	private String tid;
 	private String cid;
@@ -32,10 +31,10 @@ public class KakaoPayDetailResponseVO {
 	private Date approvedAt;
 	private  Date canceledAt;
 	private KakaoPayAmountVO amount;
-	private KakaoPayAmountVO CanceledAmount;
-	private KakaoPayAmountVO CanceledAvailableAmount;
-	private KakaoPaySelectedCardInfoVO SelectedCardInfo;
+	private KakaoPayAmountVO canceledAmount;
+	private KakaoPayAmountVO cancelAvailableAmount;
+	private KakaoPaySelectedCardInfoVO selectedCardInfo;
 //	private KakaoPayPaymentActionDetail[] PaymentActionDetail;
-	private List <KakaoPayPaymentActionDetailVO> PaymentActionDetail;
+	private List<KakaoPaymentActionDetailVO> paymentActionDetails;
 	
 }
