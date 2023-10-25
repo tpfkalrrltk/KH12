@@ -19,15 +19,18 @@ import com.kh.spring21.vo.KakaoPayApproveResponseVO;
 import com.kh.spring21.vo.KakaoPayReadyRequestVO;
 import com.kh.spring21.vo.KakaoPayReadyResponseVO;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Controller
 @RequestMapping("/pay")
+@Slf4j
 public class KakaoPayController {
 @Autowired
 private KakaoPayService kakaoPayService;
 	
 	@GetMapping("/test1")
 	public String test1() {
-		//return "/WEB-INF/views/pay/test1.jsp";
+		//return "/WEB-INF/views/pay/test1.jsp"; 
 		return "pay/test1";
 	}
 	@PostMapping("/test1")
