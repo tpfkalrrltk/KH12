@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.kh.spring21.dao.PaymentDao;
 import com.kh.spring21.dao.ProductDao;
+import com.kh.spring21.dto.PaymentDto;
 import com.kh.spring21.dto.ProductDto;
 import com.kh.spring21.service.KakaoPayService;
 import com.kh.spring21.vo.KakaoPayApproveRequestVO;
@@ -36,6 +38,8 @@ import lombok.extern.slf4j.Slf4j;
 public class KakaoPayController {
 	@Autowired
 	private KakaoPayService kakaoPayService;
+	@Autowired
+	private PaymentDao paymentDao;
 
 	@GetMapping("/test1")
 	public String test1() {
@@ -125,6 +129,7 @@ public class KakaoPayController {
 		session.setAttribute("approve", KakaoPayApproveRequestVO.builder()// 객체방식
 				.partnerOrderId(request.getPartnerOrderId()).partnerUserId(request.getPartnerUserId())
 				.tid(response.getTid()).build());
+		session.setAttribute("productNo", productNo);
 		
 		//결제페이지를 사용자에게 안내
 		return "redirect:"+response.getNextRedirectPcUrl();
@@ -136,12 +141,27 @@ public class KakaoPayController {
 	{
 		// session에 저장되어있는 flash value를 꺼내어 pg_token을 추가한뒤 승인 요청
 		KakaoPayApproveRequestVO request = (KakaoPayApproveRequestVO) session.getAttribute("approve");
+		
+		int productNo =(int) session.getAttribute("productNo");
 		session.removeAttribute("approve");
+		session.removeAttribute("productNo");
 
 		request.setPgToken(pg_token); // 토큰추가
 
-		// 결재 승인 정보
+		// 결재 승인 요청
 		KakaoPayApproveResponseVO response = kakaoPayService.approve(request);
+		
+		// 결제 승인이 완료되었다면 DB에 결제 정보를 저장
+		int paymentNo = paymentDao.sequence();
+		paymentDao.insert(PaymentDto.builder()
+				.paymentNo(paymentNo)
+				.paymentMember(response.getPartnerUserId())
+				.paymentProduct(productNo)
+				.paymentTid(response.getTid())
+				.paymentName(response.getItemName())
+				.paymentPrice(response.getAmount().getTotal())
+				.build());
+				
 		return "redirect:successResult";
 	}	
 	@RequestMapping("/test2/purchase/successResult")
