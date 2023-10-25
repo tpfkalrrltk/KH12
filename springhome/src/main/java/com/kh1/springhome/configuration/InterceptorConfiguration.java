@@ -38,7 +38,7 @@ public class InterceptorConfiguration implements WebMvcConfigurer {
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		// 1.TestInterceptor를 모든 주소처리과정에 간섭할수 있도록 설정하겠다.
-		// registry.addInterceptor(testInterceptor).addPathPatterns("/**");// "/**"은 전부다
+		 registry.addInterceptor(testInterceptor).addPathPatterns("/**");// "/**"은 전부다
 		// 라는 뜻이다.
 
 		// 2.MemberInterceptor를 회원전용 페이지 처리 과정에서 간섭할수 있도록 설정

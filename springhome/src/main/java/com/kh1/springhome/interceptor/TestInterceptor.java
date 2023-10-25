@@ -37,6 +37,7 @@ public class TestInterceptor implements HandlerInterceptor{
 public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 		throws Exception {
 log.debug("preHandle 실행");
+log.debug("response={}",response);
 	return true;
 }
 /**

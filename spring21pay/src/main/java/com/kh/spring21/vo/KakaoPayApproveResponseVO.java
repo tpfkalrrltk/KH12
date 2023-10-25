@@ -28,4 +28,5 @@ public class KakaoPayApproveResponseVO {
 	private Date createAt,approveAt;//준비/승인  시각
 	private String payload;//메모
 
+
 }

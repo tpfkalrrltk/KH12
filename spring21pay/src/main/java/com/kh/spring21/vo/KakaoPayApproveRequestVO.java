@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class KakaoPayApproveRequestVO {
-	private String cid, tid, partnerOrderId,partnerUserId,pg_token;
+	private String cid, tid, partnerOrderId,partnerUserId,pgToken;
 
 }
