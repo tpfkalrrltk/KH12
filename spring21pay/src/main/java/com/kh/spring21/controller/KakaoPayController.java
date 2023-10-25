@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.kh.spring21.dao.ProductDao;
 import com.kh.spring21.service.KakaoPayService;
 import com.kh.spring21.vo.KakaoPayApproveRequestVO;
 import com.kh.spring21.vo.KakaoPayApproveResponseVO;
@@ -92,4 +93,18 @@ public class KakaoPayController {
 		return "redirect:detail?tid"+request.getTid();
 	}
 
+	
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	@Autowired
+	private ProductDao productDao;
+	
+	@RequestMapping("test2")
+	public String test2(Model model) {
+		model.addAttribute("list",productDao.selectList());
+	//	return "WEB-INF/views/pay2/home.jsp";
+		return "pay2/home";
+	}
+	
+	
+	
 }
