@@ -1,6 +1,7 @@
 package com.kh.spring21.controller;
 
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,6 +30,7 @@ import com.kh.spring21.vo.KakaoPayDetailRequestVO;
 import com.kh.spring21.vo.KakaoPayDetailResponseVO;
 import com.kh.spring21.vo.KakaoPayReadyRequestVO;
 import com.kh.spring21.vo.KakaoPayReadyResponseVO;
+import com.kh.spring21.vo.PurchaseConfirmVO;
 import com.kh.spring21.vo.PurchaseListVO;
 import com.kh.spring21.vo.PurchaseVO;
 
@@ -182,6 +184,32 @@ public class KakaoPayController {
 		model.addAttribute("list",productDao.selectList());
 		return "pay3/home";
 	}
+	//결제 확인화면
+	@GetMapping("/test3/purchase")
+	public String  test3Purchase(@ModelAttribute PurchaseListVO listVO, Model model) {
+		List<PurchaseVO> purchaseList =listVO.getProduct();
+		List<PurchaseConfirmVO> confirmList = new ArrayList<>();//옮겨담을 리스트
+		int total = 0;
+		for(PurchaseVO vo: purchaseList)//사용자가 선택한 번호와 수량의 목록을 반복하며
+			{
+			ProductDto productDto = productDao.selectOne(vo.getProductNo());//상품정보를 구한다.
+	
+				
+			//vo와 dto를 신규객체로 만들어 추가
+			PurchaseConfirmVO confirmVO =PurchaseConfirmVO.builder()
+				.purchaseVO(vo).productDto(productDto)
+				.build();
+			
+			confirmList.add(confirmVO);//화면에 찍어줄 데이터 추가
+			total+=confirmVO.getTotal();//총 구매금액 합산
+			}
+		model.addAttribute("list",confirmList);
+		model.addAttribute("total",total);
+		return"pay3/purchase";
+		
+	}
+	
+	//결제 처리
 	@PostMapping("/test3/purchase")
 	public String test3Purchase(@ModelAttribute PurchaseListVO listVO,HttpSession session) throws URISyntaxException {
 		log.debug("상품정보={}",listVO);

@@ -20,7 +20,7 @@
 <script>
 	$(function() {
 		$(".purchase-btn").click(function() {
-			var form = $("<form>").attr("action","test3/purchase").attr("method","post");
+			var form = $("<form>").attr("action","test3/purchase").attr("method","get");
 
 			var count = 0;
 			
