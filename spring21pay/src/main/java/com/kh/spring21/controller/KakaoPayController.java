@@ -27,6 +27,7 @@ import com.kh.spring21.vo.KakaoPayDetailRequestVO;
 import com.kh.spring21.vo.KakaoPayDetailResponseVO;
 import com.kh.spring21.vo.KakaoPayReadyRequestVO;
 import com.kh.spring21.vo.KakaoPayReadyResponseVO;
+import com.kh.spring21.vo.PurchaseListVO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -169,4 +170,17 @@ public class KakaoPayController {
 		return "pay2/successResult";
 	}
 	
+	
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	@RequestMapping("/test3")
+	public String test3(Model model) {
+		model.addAttribute("list",productDao.selectList());
+		return "pay3/home";
+	}
+	@PostMapping("test3/purchase")
+	public String test3Purchase(@ModelAttribute PurchaseListVO listVO) {
+		log.debug("상품정보={}",listVO);
+		return null;
+	}
 }

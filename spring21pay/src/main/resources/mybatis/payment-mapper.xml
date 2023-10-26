@@ -11,11 +11,19 @@
     
     <insert id="save">
     insert into payment(
-    payment_no,payment_member,payment_product,payment_tid,
-    payment_name,payment_price
+    payment_no,
+    payment_member,
+    payment_product,
+    payment_tid,
+    payment_name,
+    payment_price
     )
-    values(#{paymentNO},#{paymentMember},
-    #{paymentProduct},#{paymentTid},#{paymentName},#{paymentPrice}
+    values(#{paymentNo},
+    #{paymentMember},
+    #{paymentProduct},
+    #{paymentTid},
+    #{paymentName},
+    #{paymentPrice}
     
 )
     </insert>
