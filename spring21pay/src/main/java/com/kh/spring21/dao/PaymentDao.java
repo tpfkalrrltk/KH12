@@ -10,4 +10,9 @@ public interface PaymentDao {
 	void insert(PaymentDto paymentDto);
 	List<PaymentDto> selectList();
 	void insertDetail(PaymentDetailDto paymentDetailDto);
+	List<PaymentDto> selectTotalList();
+	PaymentDetailDto selectDetail(int paymentDetailNo);
+	PaymentDto selectOne(int paymentNo);
+	void cancel(PaymentDto paymentDto);
+	void cancelDetail(int paymentDetailNo);
 }

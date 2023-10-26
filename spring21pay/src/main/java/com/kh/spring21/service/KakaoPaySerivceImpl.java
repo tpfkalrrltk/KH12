@@ -11,6 +11,7 @@ import javax.servlet.Servlet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -32,9 +33,9 @@ import com.kh.spring21.vo.PurchaseListVO;
 import com.kh.spring21.vo.PurchaseVO;
 
 import lombok.extern.slf4j.Slf4j;
-
-@Service
 @Slf4j
+@Service
+
 public class KakaoPaySerivceImpl implements KakaoPayService {
 
 	@Autowired

@@ -16,7 +16,6 @@ public class PaymentDaoImpl implements PaymentDao {
 
 	@Override
 	public int sequence() {
-		// TODO Auto-generated method stub
 		return sqlSession.selectOne("payment.sequence");
 	}
 
@@ -37,4 +36,35 @@ public class PaymentDaoImpl implements PaymentDao {
 		return sqlSession.selectList("payment.list");
 	}
 
+	@Override
+	public List<PaymentDto> selectTotalList() {
+
+		return sqlSession.selectList("payment.listAll");
+	}
+
+	@Override
+	public PaymentDetailDto selectDetail(int paymentDetailNo) {
+	
+		return sqlSession.selectOne("payment.selectDetail",paymentDetailNo);
+	}
+
+	@Override
+	public PaymentDto selectOne(int paymentNo) {
+	
+		return sqlSession.selectOne("payment.find",paymentNo);
+	}
+
+	@Override
+	public void cancel(PaymentDto paymentDto) {
+	 sqlSession.update("payment.cancel",paymentDto);
+		
+	}
+
+	
+	@Override
+	public void cancelDetail(int paymentDetailNo) {
+		sqlSession.update("payment.cancelDetail",paymentDetailNo);
+		
+	}
+	
 }
