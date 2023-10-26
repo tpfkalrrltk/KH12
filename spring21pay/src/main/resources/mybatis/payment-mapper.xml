@@ -29,9 +29,7 @@
     </insert>
     
     
-    <select id="list" resultType="PaymentDto">
-    select * from payment order by payment_no asc
-    </select>
+
     <select id="find" resultType="PaymentDto">
     select * from payment where payment_no = #{paymentNo}
     </select>
@@ -47,5 +45,30 @@
         
         )
         </insert>
-    
+        
+        <!-- 결제 대표정보만 조회(사용자별/전체) -->
+        <select id="list" resultType="PaymentDto">
+        select * from payment order by payment_no asc
+        </select>
+        
+        <!-- 결제 상세정보를 조회(결재 대표번호별) -->
+        <select id="listDetail" resultType="PaymentDetailDto">
+        select * from payment_detail where payment_detail_origin = #{paymentDetailOrigin}
+         order by payment_detail_no asc
+        </select>
+        
+         <!-- 
+         결제 대표정보와 상세정보를 계층형으로 조회 
+         - resultType은 필드명으로 데이터베이스 조회 결과를 매핑하여 처리한다
+         - 지금과 같이 복잡한 구조는 처리가 불가능하다
+         - resultMap항목을 선언하여 수동으로 매핑하도록 처리한다
+         -->
+         <resultMap type="PaymentListVO" id="paymentListVO">
+         <!-- 일단 조회 결과는 내가 지정한 객체에 필드에 맞게 배치해라! -->
+         
+         <!-- List가 하나 있는데 구문 알려줄테니까 니가 알아서 조회해서 채워라! -->
+         </resultMap>
+          <select id="listAll" resultType="paymentListDto">
+        select * from payment order by payment_no asc
+        </select>
     </mapper>
