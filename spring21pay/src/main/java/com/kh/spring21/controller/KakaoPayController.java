@@ -1,6 +1,7 @@
 package com.kh.spring21.controller;
 
 import java.net.URISyntaxException;
+import java.util.List;
 import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.kh.spring21.dao.PaymentDao;
 import com.kh.spring21.dao.ProductDao;
+import com.kh.spring21.dto.PaymentDetailDto;
 import com.kh.spring21.dto.PaymentDto;
 import com.kh.spring21.dto.ProductDto;
 import com.kh.spring21.service.KakaoPayService;
@@ -28,6 +30,7 @@ import com.kh.spring21.vo.KakaoPayDetailResponseVO;
 import com.kh.spring21.vo.KakaoPayReadyRequestVO;
 import com.kh.spring21.vo.KakaoPayReadyResponseVO;
 import com.kh.spring21.vo.PurchaseListVO;
+import com.kh.spring21.vo.PurchaseVO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -157,10 +160,11 @@ public class KakaoPayController {
 		paymentDao.insert(PaymentDto.builder()
 				.paymentNo(paymentNo)
 				.paymentMember(response.getPartnerUserId())
-				.paymentProduct(productNo)
+			//	.paymentProduct(productNo)
 				.paymentTid(response.getTid())
 				.paymentName(response.getItemName())
 				.paymentPrice(response.getAmount().getTotal())
+				.paymentRemain(response.getAmount().getTotal())
 				.build());
 				
 		return "redirect:successResult";
@@ -173,12 +177,12 @@ public class KakaoPayController {
 	
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
-	@RequestMapping("test3")
+	@RequestMapping("/test3")
 	public String test3(Model model) {
 		model.addAttribute("list",productDao.selectList());
 		return "pay3/home";
 	}
-	@PostMapping("test3/purchase")
+	@PostMapping("/test3/purchase")
 	public String test3Purchase(@ModelAttribute PurchaseListVO listVO,HttpSession session) throws URISyntaxException {
 		log.debug("상품정보={}",listVO);
 		
@@ -200,11 +204,11 @@ public class KakaoPayController {
 		
 		return "redirect:"+response.getNextRedirectPcUrl();
 	}
-	@GetMapping("/test3/purchase/succsess")
-	public String test3Succsess(@RequestParam String pg_token, HttpSession session) throws URISyntaxException {
+	@GetMapping("/test3/purchase/success")
+	public String test3Success(@RequestParam String pg_token, HttpSession session) throws URISyntaxException {
 		//session에  저장한 flash value 추출 및 삭제
 		KakaoPayApproveRequestVO request = (KakaoPayApproveRequestVO) session.getAttribute("approve");
-		PurchaseListVO list = (PurchaseListVO) session.getAttribute("listVO");
+		PurchaseListVO listVO = (PurchaseListVO) session.getAttribute("listVO");
 		
 		session.removeAttribute("approve");
 		session.removeAttribute("listVO");
@@ -213,7 +217,32 @@ public class KakaoPayController {
 		KakaoPayApproveResponseVO response =kakaoPayService.approve(request);//승인 요청
 		
 		//DB 작업
+		// - 상품을 3개 구매했다면 payment 1회, payment_detail 3회의 insert가 필요(N+1)
 		
-			return "redirect:successResult";
+		//[1]결재 번호 생성
+		int paymentNo =paymentDao.sequence();
+		//[2]결재 정보 등록
+		paymentDao.insert(PaymentDto.builder()
+				.paymentNo(paymentNo)//결재 고유 번호
+				.paymentMember(response.getPartnerUserId())//결재자 ID
+				.paymentTid(response.getTid())//PG사 거래번호
+				.paymentName(response.getItemName())//PG사 결재 상품명
+				.paymentPrice(response.getAmount().getTotal())//총 결재액
+				.paymentRemain(response.getAmount().getTotal())//총 취소가능금액
+				.build());
+		//[3] 상품 개수만큼 결재 상세정보를 등록
+		List<PurchaseVO> list = listVO.getProduct();
+		for(PurchaseVO vo : list) {
+			ProductDto productDto = productDao.selectOne(vo.getProductNo());//상품정보 조회
+			
+			paymentDao.insertDetail(PaymentDetailDto.builder()
+					.paymentDetailOrigin(paymentNo)//상위 결재 번호
+					.paymentDetailProduct(vo.getProductNo())//상품 번호(vo, productDto)
+					.paymentDetailProductName(productDto.getProductName())//상품명(productDto)
+					.paymentDetailProductPrice(productDto.getProductPrice())//상품 가격(productDto)
+					.paymentDetailProductQty(vo.getQty())//구매수량(vo)
+					.build());
+		}
+		return "redirect:successResult";
 	}
 }
