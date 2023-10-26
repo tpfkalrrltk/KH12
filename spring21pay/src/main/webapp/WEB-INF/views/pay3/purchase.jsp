@@ -20,3 +20,11 @@
 <h2>총 ${total} 원</h2>
 
 <!-- 전송되는 부분 -->
+<form method="post">
+<c:forEach var="confirmVO" items="${list}" varStatus="stat">
+<input type="hidden" name="product[${stat.index}].productNo" value="${confirmVO.productDto.productNo}">
+<input type="hidden" name="product[${stat.index}].qty" value="${confirmVO.purchaseVO.qty}">
+</c:forEach>
+<button type="submit">구매하기</button>
+
+</form>

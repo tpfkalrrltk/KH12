@@ -273,4 +273,10 @@ public class KakaoPayController {
 		}
 		return "redirect:successResult";
 	}
+	
+	@RequestMapping("/test3/purchase/successResult")
+	public String test3SuccessResult() {
+		return "pay3/successResult";
+	}
+	
 }
