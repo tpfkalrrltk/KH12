@@ -14,8 +14,11 @@
 				items="${ paymentListVO.paymentDetailList}">
 				<div style="border: 1px solid gray; padding: 10px; margin-top: 10px">
 					${paymentDetailDto}
-					<br>
+					<hr>
+					<%-- 취소가 가능한 상황일 경우에만 개별내역취소 버튼을 출력 --%>
+					<c:if test="${paymentDetailDto.paymentDetailStatus =='완료' }">
 					<a href="cancel?paymentDetailNo=${paymentDetailDto.paymentDetailNo}">개별내역취소</a>
+					</c:if>
 					</div>
 			</c:forEach>
 		</div>

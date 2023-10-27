@@ -21,6 +21,7 @@ import com.kh.spring21.dao.ProductDao;
 import com.kh.spring21.dto.PaymentDetailDto;
 import com.kh.spring21.dto.PaymentDto;
 import com.kh.spring21.dto.ProductDto;
+import com.kh.spring21.error.NoTargetException;
 import com.kh.spring21.service.KakaoPayService;
 import com.kh.spring21.vo.KakaoPayApproveRequestVO;
 import com.kh.spring21.vo.KakaoPayApproveResponseVO;
@@ -300,6 +301,11 @@ public class KakaoPayController {
 	@RequestMapping("/test3/cancel")
 	public String test3Cancel(@RequestParam int paymentDetailNo) throws URISyntaxException {
 		PaymentDetailDto paymentDetailDto = paymentDao.selectDetail(paymentDetailNo);//[1]
+		//if(paymentDetailDto.getPaymentDetailStatus().equals("취소")) {
+		if(paymentDetailDto.isCanceled()) {
+		throw new NoTargetException();
+		}
+		
 		PaymentDto paymentDto = paymentDao.selectOne(paymentDetailDto.getPaymentDetailOrigin());//[2]
 		
 		
