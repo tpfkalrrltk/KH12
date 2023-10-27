@@ -292,9 +292,11 @@ public class KakaoPayController {
 	}
 	
 	@RequestMapping("/test3/list2")
-	public String test3list2(Model model) {
-		model.addAttribute("list",paymentDao.selectTotalList());
-		return "pay3/list2";
+	public String test3list2(Model model, HttpSession session) {
+		String memberId = (String) session.getAttribute("name");
+		//model.addAttribute("list",paymentDao.selectTotalList()); //전체내역
+		model.addAttribute("list",paymentDao.selectTotalListByMember(memberId));//나의 내역
+		return "/pay3/list2";
 	}
 	//[1]결제 상세 번호로 PaymentDetailDto를 조회
 	//[2] 1번에서 조회한 PaymentDetailDto의 정보로 PaymentDto를 조회

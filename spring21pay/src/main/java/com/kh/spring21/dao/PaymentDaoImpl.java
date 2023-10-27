@@ -72,4 +72,10 @@ public class PaymentDaoImpl implements PaymentDao {
 
 	}
 
+	@Override
+	public List<PaymentDao> selectTotalListByMember(String paymentMember) {
+		
+		return sqlSession.selectList("payment.listAll",paymentMember);
+	}
+
 }
