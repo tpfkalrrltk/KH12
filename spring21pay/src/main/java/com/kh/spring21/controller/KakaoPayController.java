@@ -302,7 +302,7 @@ public class KakaoPayController {
 	public String test3Cancel(@RequestParam int paymentDetailNo) throws URISyntaxException {
 		PaymentDetailDto paymentDetailDto = paymentDao.selectDetail(paymentDetailNo);//[1]
 		//if(paymentDetailDto.getPaymentDetailStatus().equals("취소")) {
-		if(paymentDetailDto.isCanceled()) {
+		if(paymentDetailDto.isCanceled() || paymentDetailDto == null) {
 		throw new NoTargetException();
 		}
 		
@@ -318,16 +318,49 @@ public class KakaoPayController {
 		
 		//4
 		KakaoPayCancelResponseVO response =kakaoPayService.cancel(request);
-		
+		log.debug("잔여금액={}",response.getCancelAvailableAmount().getTotal());
 		//5
 		paymentDao.cancelDetail(paymentDetailNo);
 		paymentDao.cancel(PaymentDto.builder()
-				.paymentNo(paymentDetailNo) //결재대표 번호
+				.paymentNo(paymentDto.getPaymentNo()) //결재대표 번호
 				.paymentRemain(response.getCancelAvailableAmount().getTotal())//잔여금액
 				.build());
 
 		
 		return "redirect:list2";
+	}
+	
+	//결제 그룹 전체 취소
+	//[1] 전달받은 paymentNo로 paymentDto를 조회
+	// -잔여금액이 0이라면 차단
+	//[2] 1번에서 거래번호(tid)와 잔여금액을 꺼내서 카카오페이에 취소 요청을 전송
+	//[3] 취소가 성공하였더라면 DB에서 다음의 항목을 수정
+	// -payment에서 잔여금액을 0으로 수정
+	// -payment_detail에서 해당 payment_no에 대한 모든 상태를 취소로 변경
+	@RequestMapping("/test3/cancelAll")
+	public String test3CancelAll(@RequestParam int paymentNo) throws URISyntaxException {
+		//1
+		PaymentDto paymentDto = paymentDao.selectOne(paymentNo);
+		if(paymentDto == null || paymentDto.getPaymentRemain() ==0) {
+			throw new NoTargetException("이미 취소된 결재입니다.");
+		}
+		
+		//2
+		KakaoPayCancelRequestVO request = KakaoPayCancelRequestVO.builder()
+				.tid(paymentDto.getPaymentTid())//거래번호
+				.cancelAmount(paymentDto.getPaymentRemain())//잔여금액
+				.build();
+		KakaoPayCancelResponseVO response =kakaoPayService.cancel(request);
+		
+		//3
+		paymentDao.cancel(paymentDto.builder()
+				.paymentNo(paymentNo)
+				.paymentRemain(0)
+				.build());
+		paymentDao.cancelDetailGroup(paymentNo);
+		
+		return "redirect:list2";
+
 	}
 	
 }

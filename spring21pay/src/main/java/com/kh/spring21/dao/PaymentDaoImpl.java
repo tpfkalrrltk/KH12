@@ -21,14 +21,14 @@ public class PaymentDaoImpl implements PaymentDao {
 
 	@Override
 	public void insert(PaymentDto paymentDto) {
-	sqlSession.insert("payment.save",paymentDto);
-		
+		sqlSession.insert("payment.save", paymentDto);
+
 	}
 
 	@Override
 	public void insertDetail(PaymentDetailDto paymentDetailDto) {
-	sqlSession.insert("payment.saveDetail",paymentDetailDto);
-		
+		sqlSession.insert("payment.saveDetail", paymentDetailDto);
+
 	}
 
 	@Override
@@ -44,27 +44,32 @@ public class PaymentDaoImpl implements PaymentDao {
 
 	@Override
 	public PaymentDetailDto selectDetail(int paymentDetailNo) {
-	
-		return sqlSession.selectOne("payment.selectDetail",paymentDetailNo);
+
+		return sqlSession.selectOne("payment.selectDetail", paymentDetailNo);
 	}
 
 	@Override
 	public PaymentDto selectOne(int paymentNo) {
-	
-		return sqlSession.selectOne("payment.find",paymentNo);
+
+		return sqlSession.selectOne("payment.find", paymentNo);
 	}
 
 	@Override
 	public void cancel(PaymentDto paymentDto) {
-	 sqlSession.update("payment.cancel",paymentDto);
-		
+		sqlSession.update("payment.cancel", paymentDto);
+
 	}
 
-	
 	@Override
 	public void cancelDetail(int paymentDetailNo) {
-		sqlSession.update("payment.cancelDetail",paymentDetailNo);
-		
+		sqlSession.update("payment.cancelDetail", paymentDetailNo);
+
 	}
-	
+
+	@Override
+	public void cancelDetailGroup(int paymentDetailOrigin) {
+		sqlSession.update("payment.cancelDetailGroup", paymentDetailOrigin);
+
+	}
+
 }
