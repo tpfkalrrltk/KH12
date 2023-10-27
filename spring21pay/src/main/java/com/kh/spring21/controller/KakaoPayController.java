@@ -35,16 +35,16 @@ import com.kh.spring21.vo.PurchaseConfirmVO;
 import com.kh.spring21.vo.PurchaseListVO;
 import com.kh.spring21.vo.PurchaseVO;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Controller
 @RequestMapping("/pay")
 
-
 public class KakaoPayController {
 	@Autowired
-	private KakaoPayService kakaoPayService;
+	private  KakaoPayService kakaoPayService;
 	@Autowired
 	private PaymentDao paymentDao;
 
@@ -213,14 +213,17 @@ public class KakaoPayController {
 	//결제 처리
 	@PostMapping("/test3/purchase")
 	public String test3Purchase(@ModelAttribute PurchaseListVO listVO,HttpSession session) throws URISyntaxException {
-		log.debug("상품정보={}",listVO);
+
 		
 		//listVO에 들어있는 product 항목들을 이용해서 결제 준비 요청 처리 후 결제 페이지로 안내
 		// -결제이름은 대표 상품명 외 ?개 와  같이 작성
 		// -결제금액은 모든 상품의 가격과 수량의 총합계
 		// -결론적으로 만들어야 하는 데이터는 KakaoPayReadyRequestVO
 		KakaoPayReadyRequestVO request = kakaoPayService.convert(listVO);
-		request.setPartnerUserId("testuser1");
+		
+		String memberId = (String) session.getAttribute("name");
+		request.setPartnerUserId(memberId);
+		
 		KakaoPayReadyResponseVO response = kakaoPayService.ready(request);
 		
 		// session에 flash value를 저장(잠시 쓰고 지우는 데이터)
@@ -249,7 +252,9 @@ public class KakaoPayController {
 		// - 상품을 3개 구매했다면 payment 1회, payment_detail 3회의 insert가 필요(N+1)
 		
 		//[1]결재 번호 생성
-		int paymentNo =paymentDao.sequence();
+		//int paymentNo =paymentDao.sequence();
+		int paymentNo=Integer.parseInt(response.getPartnerOrderId());
+		log.debug("그래서 이게 뭔데={}",paymentNo);
 		//[2]결재 정보 등록
 		paymentDao.insert(PaymentDto.builder()
 				.paymentNo(paymentNo)//결재 고유 번호
@@ -318,7 +323,7 @@ public class KakaoPayController {
 		
 		//4
 		KakaoPayCancelResponseVO response =kakaoPayService.cancel(request);
-		log.debug("잔여금액={}",response.getCancelAvailableAmount().getTotal());
+		
 		//5
 		paymentDao.cancelDetail(paymentDetailNo);
 		paymentDao.cancel(PaymentDto.builder()
@@ -361,6 +366,20 @@ public class KakaoPayController {
 		
 		return "redirect:list2";
 
+	}
+	
+	//결제 취소와 결제실패의 경우에도 세션에 저장한 flash value를 삭제해야 한다.
+	@RequestMapping("/test3/purchase/cancel")
+	public String test3cancel(HttpSession session) {
+		session.removeAttribute("approve");
+		session.removeAttribute("listVO");
+		return "취소했을때 보여줄 페이지";
+	}
+	@RequestMapping("/test3/purchase/fail")
+	public String test3fail(HttpSession session) {
+		session.removeAttribute("approve");
+		session.removeAttribute("listVO");
+		return "실패했을때 보여줄 페이지";
 	}
 	
 }

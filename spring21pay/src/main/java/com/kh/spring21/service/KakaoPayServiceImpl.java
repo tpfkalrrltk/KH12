@@ -19,6 +19,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.kh.spring21.configuration.KakaoPayProperties;
+import com.kh.spring21.dao.PaymentDao;
 import com.kh.spring21.dao.ProductDao;
 import com.kh.spring21.dto.ProductDto;
 import com.kh.spring21.vo.KakaoPayApproveRequestVO;
@@ -36,7 +37,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 
-public class KakaoPaySerivceImpl implements KakaoPayService {
+public class KakaoPayServiceImpl implements KakaoPayService {
 
 	@Autowired
 	private KakaoPayProperties kakaoPayProperties;
@@ -46,6 +47,8 @@ public class KakaoPaySerivceImpl implements KakaoPayService {
 	private HttpHeaders headers;
 	@Autowired
 	private ProductDao productDao;
+	@Autowired
+	private PaymentDao paymentDao;
 
 	@Override
 	public KakaoPayReadyResponseVO ready(KakaoPayReadyRequestVO request) throws URISyntaxException {
@@ -150,9 +153,12 @@ public class KakaoPaySerivceImpl implements KakaoPayService {
 			name +=" 외 "+(list.size()-1)+"건";
 		}
 		
+		//partner_order_id에 결재번호를 집어 넣으면 충돌도 없고 좋지 않을까?
+		int paymentNo =paymentDao.sequence();
+		
 		return KakaoPayReadyRequestVO.builder()
-				.partnerOrderId(UUID.randomUUID().toString())
-				.partnerUserId(name)
+				//.partnerOrderId(UUID.randomUUID().toString())
+				.partnerOrderId(String.valueOf(paymentNo))
 				.itemName(name)
 				.itemPrice(total).build();
 	}
