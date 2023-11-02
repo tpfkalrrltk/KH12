@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="ko">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>황민하</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.2/dist/comdo/bootstrap.min.css">
+    <link href="test.css" rel="stylesheet">
+    <!-- 아이콘 사용을 위한 Font Awesome 6 CDN -->
+    <link rel="stylesheet" type="text/css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+</head>
+<style>
+    div {
+        box-shadow: 0 0 0 black;
+    }
+
+    .active {
+        opacity: 50%;
+    }
+</style>
+
+<script>
+
+    $(function () {
+
+        $(".food-img").hover(function (e) {
+
+            $(this).removeClass("active")
+        },
+            function (e) {
+                $(this).addClass("active")
+            });
+
+
+
+
+        $(".food-img").click(function () {
+            var src = $(this).data("src");
+            $(".main-img").attr("src", src);
+        })
+    });
+
+
+</script>
+
+
+<body>
+    <div class="container mt-4">
+
+        <div class="row">
+            <div class="p-4 text-light bg-dark rounded">
+                <h1>평가 문항</h1>
+                <p>다음 화면과 기능을 구현하시오</p>
+            </div>
+        </div>
+        <div class="row mt-4"></div>
+        <div class="col-4 offset-4 p-4 text-center">
+            <img class="main-img w-100" width="300" height="300" data-src="./images/question.png"
+                src="./images/question.png">
+        </div>
+        <div class="row mt-4">
+            <div class="col-md-1 col-2 p-3">
+                <img class="food-img w-100 active " data-src="./images/ssusi.png" src="./images/ssusi.png">
+            </div>
+            <div class="col-md-1 col-2 p-3">
+                <img class="food-img w-100 active" data-src="./images/ddukboki.png" src="./images/ddukboki.png">
+            </div>
+            <div class="col-md-1 col-2 p-3">
+                <img class="food-img w-100 active " data-src="./images/hamberger.png" src="./images/hamberger.png">
+            </div>
+            <div class="col-md-1 col-2 p-3">
+                <img class="food-img w-100 active" data-src="./images/noodles.png" src="./images/noodles.png">
+            </div>
+        </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
