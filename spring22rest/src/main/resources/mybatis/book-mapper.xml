@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    <mapper namespace="book">
+    <select id="list" resultType="BookDto">
+    select * from book order by book_id asc
+    </select>
+    <select id="selectOne" resultType="BookDto">
+    select *from book where book_id = #{bookId}
+    </select>
+    
+    <update id="edit">
+    update book set book_id =#{bookDto.bookId}, book_title=#{bookDto.bookTitle}, book_author=#{bookDto.bookAuthor}, 
+    book_publication_date=#{bookDto.bookPublicationDate}, book_price=#{bookDto.bookPrice}, book_publisher =#{bookDto.bookPublisher},
+    book_page_count=#{bookDto.bookPageCount}, book_genre =#{bookDto.bookGenre} where book_id =#{bookId}
+    </update>
+    
+    <insert id="add">
+    insert into book(book_id, book_title, book_author, book_publication_date, book_price, book_publisher, book_page_count, book_genre) 
+   values (book_seq.nextval, #{bookTitle}, #{bookAuthor}, #{bookPublicationDate}, #{bookPrice},#{bookPublisher},#{bookPageCount},#{bookGenre})
+    </insert>
+    
+    <delete id="delete">
+    delete book where book_id = #{bookId}</delete>
+    
+    <update id="editUnit">
+    update book 
+    <set>
+    <if test="bookDto.bookId >0">book_id = #{bookDto.bookId},</if>
+       <if test="bookDto.bookTitle !=null">book_title = #{bookDto.bookTitle},</if>
+          <if test="bookDto.bookAuthor !=null">book_author = #{bookDto.bookAuthor},</if>
+             <if test="bookDto.bookPublicationDate !=null">book_publication_date = #{bookDto.bookPublicationDate},</if>
+                <if test="bookDto.bookPrice >0">book_price = #{bookDto.bookPrice},</if>
+                   <if test="bookDto.bookPublisher !=null">book_publisher = #{bookDto.bookPublisher},</if>
+                      <if test="bookDto.bookPageCount >0">book_page_count = #{bookDto.bookPageCount},</if>
+                         <if test="bookDto.bookGenre !=null">book_genre = #{bookDto.bookGenre},</if>
+   </set> where book_id =#{bookId}
+    </update>
+    </mapper>

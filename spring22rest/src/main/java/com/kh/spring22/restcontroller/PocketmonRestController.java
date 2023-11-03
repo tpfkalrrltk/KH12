@@ -22,6 +22,7 @@ import com.kh.spring22.dao.PocketmonDao;
 import com.kh.spring22.dto.PocketmonDto;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
@@ -29,6 +30,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.extern.slf4j.Slf4j;
 
 
 //문서용 annotation
@@ -103,7 +105,10 @@ public class PocketmonRestController {
 	// public void insert(@ModelAttribute PocketmonDto pocketmonDto) { //form-data
 	// 수신용
 	public void insert(
-			@ParameterObject
+			@Parameter(description = "생성할 몬스터명/타입 객체",
+			required = true,
+			schema = @Schema(implementation = PocketmonDto.class)
+					)
 			@RequestBody PocketmonDto pocketmonDto) { // request body 직접해석(ex : JSON)
 		pocketmonDao.insert(pocketmonDto);
 	}
@@ -124,7 +129,7 @@ public class PocketmonRestController {
 
 	@GetMapping("/{no}")
 	public ResponseEntity<PocketmonDto> find(@PathVariable int no) {
-		PocketmonDto pocketmonDto = pocketmonDao.selelctOne(no);
+		PocketmonDto pocketmonDto = pocketmonDao.selectOne(no);
 
 		if (pocketmonDto != null) {
 			// return ResponseEntity.ok(pocketmonDto);
@@ -146,7 +151,7 @@ public class PocketmonRestController {
 			@PathVariable int no, @RequestBody PocketmonDto pocketmonDto) {
 		if(pocketmonDto.isEmpty()) {
 			ResponseEntity.badRequest().build();
-		}
+		}		
 		boolean result = pocketmonDao.editUnit(no, pocketmonDto);
 		return result ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
 	}

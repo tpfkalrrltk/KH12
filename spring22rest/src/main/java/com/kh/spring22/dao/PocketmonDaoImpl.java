@@ -36,7 +36,7 @@ public class PocketmonDaoImpl implements PocketmonDao {
 	}
 
 	@Override
-	public PocketmonDto selelctOne(int no) {
+	public PocketmonDto selectOne(int no) {
 	
 		return sqlSession.selectOne("pocketmon.find",no);
 	}
