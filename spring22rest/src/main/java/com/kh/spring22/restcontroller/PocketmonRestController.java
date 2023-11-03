@@ -54,13 +54,32 @@ public class PocketmonRestController {
 	public ResponseEntity<String> delete(@PathVariable int no) {// 상태 설정이 가능한 객체를 반환
 		boolean result = pocketmonDao.delete(no);
 		if (result) {
-			//return ResponseEntity.ok().build();
+			// return ResponseEntity.ok().build();
 			return ResponseEntity.status(200).build();
-		}
-		else {
-			//return ResponseEntity.notFound().build();
+		} else {
+			// return ResponseEntity.notFound().build();
 			return ResponseEntity.status(404).build();
 		}
 	}
 
+	@GetMapping("/{no}")
+	public ResponseEntity<PocketmonDto>  find(@PathVariable int no) {
+		PocketmonDto pocketmonDto = pocketmonDao.selelctOne(no);
+	
+		if(pocketmonDto !=null) {
+		//	return ResponseEntity.ok(pocketmonDto);
+			return ResponseEntity.ok().body(pocketmonDto);
+		}
+		else {
+			return ResponseEntity.notFound().build();
+		}
+	
+	}
+	
+	@PutMapping("/{no}")
+	public ResponseEntity<String> edit(@PathVariable int no,
+			@RequestBody PocketmonDto pocketmonDto){
+		boolean result = pocketmonDao.edit(no,pocketmonDto);
+		return result ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
+	}
 }

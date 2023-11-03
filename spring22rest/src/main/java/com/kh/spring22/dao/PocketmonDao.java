@@ -10,5 +10,8 @@ public interface PocketmonDao {
 	void insert(PocketmonDto pocketmonDto);
 	
 	boolean delete(int no);
+	PocketmonDto selelctOne(int no);
+
+	boolean edit(int no, PocketmonDto pocketmonDto);
 
 }

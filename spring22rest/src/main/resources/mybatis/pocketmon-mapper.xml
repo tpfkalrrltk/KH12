@@ -10,13 +10,27 @@
 	</select>
 
 	<insert id="save">
-		insert into pocketmon(no, name, type) values(pocketmon_seq.nextval,
+		insert into pocketmon(no, name, type)
+		values(pocketmon_seq.nextval,
 		#{name}, #{type})
 	</insert>
-	
+
 	<delete id="remove">
-	delete pocketmon where no = #{no}
+		delete pocketmon where no = #{no}
 	</delete>
+
+	<select id="find" resultType="PocketmonDto">
+		select * from pocketmon where no
+		=#{no}
+	</select>
+
+	<update id="edit">
+		update pocketmon set
+		<if test="dto.no >0">
+			no=#{dto.no},
+		</if>
+		name=#{dto.name} , type=#{dto.type} where no =${no}
+	</update>
 
 
 </mapper>
