@@ -12,5 +12,10 @@ import lombok.NoArgsConstructor;
 public class PocketmonDto {
 	private int no;
 	private String name, type;
+	
+	
+	public boolean isEmpty() {
+		return no==0 && name ==null && type==null;
+	}
 
 }

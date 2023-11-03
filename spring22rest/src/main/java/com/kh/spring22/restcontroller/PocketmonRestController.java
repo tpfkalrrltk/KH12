@@ -2,6 +2,7 @@ package com.kh.spring22.restcontroller;
 
 import java.util.List;
 
+import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -44,7 +45,9 @@ public class PocketmonRestController {
 	@PostMapping("/")
 	// public void insert(@ModelAttribute PocketmonDto pocketmonDto) { //form-data
 	// 수신용
-	public void insert(@RequestBody PocketmonDto pocketmonDto) { // request body 직접해석(ex : JSON)
+	public void insert(
+			@ParameterObject
+			@RequestBody PocketmonDto pocketmonDto) { // request body 직접해석(ex : JSON)
 		pocketmonDao.insert(pocketmonDto);
 	}
 
@@ -63,23 +66,31 @@ public class PocketmonRestController {
 	}
 
 	@GetMapping("/{no}")
-	public ResponseEntity<PocketmonDto>  find(@PathVariable int no) {
+	public ResponseEntity<PocketmonDto> find(@PathVariable int no) {
 		PocketmonDto pocketmonDto = pocketmonDao.selelctOne(no);
-	
-		if(pocketmonDto !=null) {
-		//	return ResponseEntity.ok(pocketmonDto);
+
+		if (pocketmonDto != null) {
+			// return ResponseEntity.ok(pocketmonDto);
 			return ResponseEntity.ok().body(pocketmonDto);
-		}
-		else {
+		} else {
 			return ResponseEntity.notFound().build();
 		}
-	
+
 	}
-	
+
 	@PutMapping("/{no}")
-	public ResponseEntity<String> edit(@PathVariable int no,
-			@RequestBody PocketmonDto pocketmonDto){
-		boolean result = pocketmonDao.edit(no,pocketmonDto);
+	public ResponseEntity<String> edit(@PathVariable int no, @RequestBody PocketmonDto pocketmonDto) {
+		boolean result = pocketmonDao.edit(no, pocketmonDto);
+		return result ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
+	}
+
+	@PatchMapping("/{no}")
+	public ResponseEntity<String> editUnit(
+			@PathVariable int no, @RequestBody PocketmonDto pocketmonDto) {
+		if(pocketmonDto.isEmpty()) {
+			ResponseEntity.badRequest().build();
+		}
+		boolean result = pocketmonDao.editUnit(no, pocketmonDto);
 		return result ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
 	}
 }

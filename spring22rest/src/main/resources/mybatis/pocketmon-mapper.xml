@@ -29,8 +29,17 @@
 		<if test="dto.no >0">
 			no=#{dto.no},
 		</if>
-		name=#{dto.name} , type=#{dto.type} where no =${no}
+		name=#{dto.name} , type=#{dto.type} where no =#{no}
 	</update>
 
+	<update id="editUnit">
+		update pocketmon
+		<set>
+			<if test="dto.no > 0">no = #{dto.no},</if>
+			<if test="dto.name != null">name = #{dto.name},</if>
+			<if test="dto.type != null">type = #{dto.type},</if>
+		</set>
+		where no = #{no}
+	</update>
 
 </mapper>

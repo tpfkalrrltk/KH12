@@ -14,4 +14,6 @@ public interface PocketmonDao {
 
 	boolean edit(int no, PocketmonDto pocketmonDto);
 
+	boolean editUnit(int no, PocketmonDto pocketmonDto);
+
 }
