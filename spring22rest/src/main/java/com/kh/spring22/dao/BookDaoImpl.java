@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.kh.spring22.dto.BookDto;
+import com.kh.spring22.error.NoTargetException;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -31,23 +32,29 @@ public class BookDaoImpl implements BookDao {
 	}
 
 	@Override
-	public boolean edit(int bookId, BookDto bookDto) {
+	public void edit(int bookId, BookDto bookDto) {
 		Map<String, Object> params = Map.of("bookId", bookId, "bookDto", bookDto);
 		// params.put("bookId", bookId);
 		// params.put("bookDto", bookDto);
-
-		return sqlSession.update("book.edit", params) > 0;
+		int result = sqlSession.update("book.edit", params);
+		if (result == 0)
+			throw new NoTargetException();
 	}
 
 	@Override
-	public boolean delete(int bookId) {
-		return sqlSession.delete("book.delete", bookId) > 0;
+	public void delete(int bookId) {
+		int result = sqlSession.delete("book.delete", bookId);
+		if (result == 0)
+			throw new NoTargetException();
 	}
 
 	@Override
 	public BookDto selectOne(int bookId) {
+		BookDto bookDto = sqlSession.selectOne("book.selectOne", bookId);
+		if (bookDto == null)
+			throw new NoTargetException();
+		return bookDto;
 
-		return sqlSession.selectOne("book.selectOne", bookId);
 	}
 
 	@Override

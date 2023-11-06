@@ -41,19 +41,14 @@ public class BookRestController {
 	}
 
 	@DeleteMapping("/{bookId}")
-	public ResponseEntity<String> delete(@PathVariable int bookId) {
-		boolean result = bookDao.delete(bookId);
-		if (result) {
-			return ResponseEntity.ok().build();
-		} else {
-			return ResponseEntity.notFound().build();
-		}
+	public void delete(@PathVariable int bookId) {
+		bookDao.delete(bookId);
 	}
 
 	@PutMapping("/{bookId}")
-	public ResponseEntity<String> edit(@PathVariable int bookId, @RequestBody BookDto bookDto) {
-		boolean result = bookDao.edit(bookId, bookDto);
-		return result ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
+	public void edit(@PathVariable int bookId, @RequestBody BookDto bookDto) {
+		bookDao.edit(bookId, bookDto);
+
 	}
 
 	@GetMapping("/{bookId}")
@@ -65,22 +60,22 @@ public class BookRestController {
 			return ResponseEntity.notFound().build();
 		}
 	}
-	
+
 	@PatchMapping("/{bookId}")
-	public ResponseEntity<String>editUnit(
-			@PathVariable int bookId, @RequestBody BookDto bookDto){
-		if(bookDto.isEmpty()) {
+	public ResponseEntity<String> editUnit(@PathVariable int bookId, @RequestBody BookDto bookDto) {
+		if (bookDto.isEmpty()) {
 			ResponseEntity.badRequest().build();
 		}
-		log.debug("책={}",bookDto);
-		log.debug("아이디={}",bookId);
+		log.debug("책={}", bookDto);
+		log.debug("아이디={}", bookId);
 		boolean result = bookDao.editUnit(bookId, bookDto);
 		return result ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
 
 	}
+
 	@GetMapping("/search/{bookTitle}")
-	public List<BookDto> searchBook(@PathVariable String bookTitle){
+	public List<BookDto> searchBook(@PathVariable String bookTitle) {
 		return bookDao.searchBookTitle(bookTitle);
 	}
-	
- }
+
+}

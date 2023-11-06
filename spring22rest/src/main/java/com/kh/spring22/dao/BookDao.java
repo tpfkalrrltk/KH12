@@ -8,8 +8,8 @@ public interface BookDao {
 
 	List<BookDto>List();
 	void add(BookDto bookDto);
-	boolean edit(int bookId, BookDto bookDto);
-	boolean delete (int bookId);
+	void edit(int bookId, BookDto bookDto);
+	void delete (int bookId);
 	BookDto selectOne(int bookId);
 	boolean editUnit(int bookId, BookDto bookDto);
 	List<BookDto> searchBookTitle(String bookTitle); 
