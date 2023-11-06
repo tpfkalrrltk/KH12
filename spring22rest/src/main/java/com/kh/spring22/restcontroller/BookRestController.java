@@ -78,4 +78,9 @@ public class BookRestController {
 		return result ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
 
 	}
-}
+	@GetMapping("/search/{bookTitle}")
+	public List<BookDto> searchBook(@PathVariable String bookTitle){
+		return bookDao.searchBookTitle(bookTitle);
+	}
+	
+ }
