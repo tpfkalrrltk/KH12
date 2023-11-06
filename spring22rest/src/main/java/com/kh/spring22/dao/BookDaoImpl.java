@@ -9,6 +9,10 @@ import org.springframework.stereotype.Repository;
 
 import com.kh.spring22.dto.BookDto;
 
+import lombok.extern.slf4j.Slf4j;
+
+
+@Slf4j
 @Repository
 public class BookDaoImpl  implements BookDao{
 
@@ -49,6 +53,8 @@ public class BookDaoImpl  implements BookDao{
 
 	@Override
 	public boolean editUnit(int bookId, BookDto bookDto) {
+		log.debug("bookId = {}", bookId);
+		log.debug("bookDto = {}", bookDto);
 		Map<String, Object> params = new HashMap<>();
 		params.put("bookId", bookId);
 		params.put("bookDto", bookDto);
